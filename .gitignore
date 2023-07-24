@@ -1,0 +1,13 @@
+*.o
+*.a
+*.d
+*.elf
+*.lst
+*.img
+*.hex
+*.map
+.directory
+Config*.mk
+target/
+tmp/
+Cargo.lock
