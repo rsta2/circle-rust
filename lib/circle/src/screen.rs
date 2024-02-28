@@ -16,6 +16,10 @@ impl ScreenDevice {
         }
     }
 
+    pub fn get_handle(&self) -> circle_handle_t {
+        self.handle
+    }
+
     pub fn write(&self, string: &str) {
         unsafe {
             device_write(self.handle, string.as_ptr() as *const c_void, string.len() as c_ulong);

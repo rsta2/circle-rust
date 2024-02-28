@@ -14,7 +14,11 @@ pub fn circle_init() {
 }
 
 pub mod act_led;
+pub mod kernel_options;
 pub mod screen;
+pub mod logger;
+
+pub mod util;
 
 use core::panic::PanicInfo;
 

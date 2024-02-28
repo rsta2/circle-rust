@@ -10,7 +10,7 @@ extern "C" {
 
 typedef void *circle_handle_t;
 
-void circle_init ();
+void circle_init (void);
 
 circle_handle_t act_led_create (void);
 void act_led_destroy (circle_handle_t handle);
@@ -18,11 +18,26 @@ void act_led_on (circle_handle_t handle);
 void act_led_off (circle_handle_t handle);
 void act_led_blink (circle_handle_t handle, unsigned count, unsigned msec_on, unsigned msec_off);
 
+unsigned kernel_options_get_width (void);
+unsigned kernel_options_get_height (void);
+unsigned kernel_options_get_log_level (void);
+
 circle_handle_t screen_device_create (unsigned width, unsigned height, unsigned display_num);
 
 int device_write (circle_handle_t handle, const void *buffer, unsigned long size);
 
 void timer_simple_ms_delay (unsigned msec);
+
+enum log_severity_t
+{
+	log_panic,
+	log_error,
+	log_warning,
+	log_notice,
+	log_debug
+};
+void logger_create (circle_handle_t target_handle, unsigned log_level);
+void logger_write (const char *source, enum log_severity_t severity, const char *msg);
 
 #ifdef __cplusplus
 }
