@@ -32,8 +32,10 @@ ifeq ($(strip $(RASPPI)),3)
 TARGET = kernel8
 else ifeq ($(strip $(RASPPI)),4)
 TARGET = kernel8-rpi4
+else ifeq ($(strip $(RASPPI)),5)
+TARGET = kernel_2712
 else
-$(error RASPPI must be set to 3 or 4)
+$(error RASPPI must be set to 3, 4 or 5)
 endif
 RUST_TARGET = aarch64-unknown-none
 PREFIX64 ?= aarch64-none-elf-
