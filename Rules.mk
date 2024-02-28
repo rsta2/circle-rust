@@ -64,7 +64,7 @@ $(TARGET).img: $(SRCS)
 
 clean:
 	@echo "  CLEAN " `pwd`
-	@cargo clean
+	@cargo -q clean
 	@rm -f *.d *.o *.a *.elf *.lst *.img *.hex *.cir *.map *~ $(EXTRACLEAN)
 
 
