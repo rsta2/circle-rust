@@ -21,4 +21,10 @@ impl KernelOptions {
             kernel_options_get_log_level()
         }
     }
+
+    pub fn get_log_serial_device_num() -> i32 {
+        unsafe {
+            kernel_options_get_log_serial_device_num()
+        }
+    }
 }

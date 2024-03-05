@@ -15,7 +15,9 @@ pub fn circle_init() {
 
 pub mod act_led;
 pub mod kernel_options;
+pub mod device;
 pub mod screen;
+pub mod serial;
 pub mod logger;
 
 pub mod util;

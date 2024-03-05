@@ -3,9 +3,11 @@
 #include <circle/devicenameservice.h>
 #include <circle/actled.h>
 #include <circle/screen.h>
+#include <circle/serial.h>
 #include <circle/exceptionhandler.h>
 #include <circle/timer.h>
 #include <circle/logger.h>
+#include <circle/util.h>
 #include <assert.h>
 
 static CKernelOptions *s_pKernelOptions = nullptr;
@@ -70,6 +72,33 @@ unsigned kernel_options_get_log_level (void)
 	return s_pKernelOptions->GetLogLevel ();
 }
 
+int kernel_options_get_log_serial_device_num (void)
+{
+	assert (s_pKernelOptions);
+	const char *pLogDevice = s_pKernelOptions->GetLogDevice ();
+
+	if (  !pLogDevice
+	    || strncmp (pLogDevice, "ttyS", 4))
+	{
+		return -1;
+	}
+
+	char *pEnd = nullptr;
+	unsigned long ulSerialNum = strtoul (pLogDevice+4, &pEnd, 10);
+	if (   pEnd
+	    && *pEnd != '\0')
+	{
+		return -1;
+	}
+
+	if (ulSerialNum < 1 || ulSerialNum > 50)
+	{
+		return -1;
+	}
+
+	return (int) ulSerialNum-1;
+}
+
 circle_handle_t screen_device_create (unsigned width, unsigned height, unsigned display_num)
 {
 	CScreenDevice *screen = new CScreenDevice (width, height, false, display_num);
@@ -80,6 +109,27 @@ circle_handle_t screen_device_create (unsigned width, unsigned height, unsigned 
 	}
 
 	return screen;
+}
+
+circle_handle_t serial_device_create (unsigned baudrate, unsigned data_bits, unsigned stop_bits,
+				      serial_parity_t parity, unsigned device_num)
+{
+	CSerialDevice::TParity Parity = CSerialDevice::ParityNone;
+	switch (parity)
+	{
+	case serial_parity_none:	Parity = CSerialDevice::ParityNone;	break;
+	case serial_parity_odd:		Parity = CSerialDevice::ParityOdd;	break;
+	case serial_parity_even:	Parity = CSerialDevice::ParityEven;	break;
+	}
+
+	CSerialDevice *serial = new CSerialDevice (nullptr, FALSE, device_num);
+
+	if (!serial->Initialize (baudrate, data_bits, stop_bits, Parity))
+	{
+		return 0;
+	}
+
+	return serial;
 }
 
 int device_write (circle_handle_t handle, const void *buffer, unsigned long size)

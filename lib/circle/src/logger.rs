@@ -1,5 +1,5 @@
 use crate::wrapper::*;
-use crate::screen::ScreenDevice;
+use crate::device::Device;
 use crate::util::str_as_cstr_to_buf;
 use core::ffi::c_char;
 
@@ -13,7 +13,7 @@ impl Logger {
     const MAX_SOURCE_LEN: usize = 50;
     const MAX_MESSAGE_LEN: usize = 200;
 
-    pub fn init(target: &ScreenDevice, log_level: log_severity_t) {
+    pub fn init(target: &dyn Device, log_level: log_severity_t) {
         unsafe {
             logger_create (target.get_handle(), log_level);
         }

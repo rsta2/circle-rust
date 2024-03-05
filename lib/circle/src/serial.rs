@@ -4,21 +4,21 @@ use core::str;
 use core::ffi::c_void;
 use core::ffi::c_ulong;
 
-pub struct ScreenDevice {
-    handle: circle_handle_t,
+pub struct SerialDevice {
+    handle: circle_handle_t
 }
 
-impl ScreenDevice {
-    pub fn new(width: u32, height: u32, display_num: u32) -> ScreenDevice {
-        ScreenDevice {
+impl SerialDevice {
+   pub fn new(baudrate: u32, data_bits: u32, stop_bits: u32, partity: serial_parity_t, device_num: u32) -> SerialDevice {
+        SerialDevice {
             handle: unsafe {
-                screen_device_create(width, height, display_num)
-            },
+                serial_device_create(baudrate, data_bits, stop_bits, partity, device_num)
+            }
         }
     }
  }
 
-impl Device for ScreenDevice {
+impl Device for SerialDevice {
     fn get_handle(&self) -> circle_handle_t {
         self.handle
     }

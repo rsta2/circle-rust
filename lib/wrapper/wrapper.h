@@ -21,8 +21,19 @@ void act_led_blink (circle_handle_t handle, unsigned count, unsigned msec_on, un
 unsigned kernel_options_get_width (void);
 unsigned kernel_options_get_height (void);
 unsigned kernel_options_get_log_level (void);
+int kernel_options_get_log_serial_device_num (void);
 
 circle_handle_t screen_device_create (unsigned width, unsigned height, unsigned display_num);
+
+enum serial_parity_t
+{
+	serial_parity_none,
+	serial_parity_odd,
+	serial_parity_even
+};
+
+circle_handle_t serial_device_create (unsigned baudrate, unsigned data_bits, unsigned stop_bits,
+				      enum serial_parity_t parity, unsigned device_num);
 
 int device_write (circle_handle_t handle, const void *buffer, unsigned long size);
 
